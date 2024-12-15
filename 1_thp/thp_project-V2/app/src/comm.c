@@ -11,6 +11,7 @@
 #include "comm_cmd.h"
 #include "comm_msg.h"
 #include "crc_check.h"
+#include "memory.h"
 
 /**************************************************************************************************
 *                                      MACROS DEFINE
@@ -28,6 +29,7 @@
 uint8_t comm_ctrl_tx_data[COMM_QUEUE_SIZE] = {0};
 uint8_t comm_ctrl_rx_data[COMM_QUEUE_SIZE] = {0};
 comm_data_t comm_ctrl = {0};
+uint32_t comm_len_data = 0;  //临时用作上位机存储长数据处理
 
 /**************************************************************************************************
 *                                      FUNCTION PROTOTYPES
@@ -45,7 +47,37 @@ int fputc(int ch, FILE *f)
 */
 void uart8_receive(uint8_t *data, uint16_t len)
 {
-    queue_input_u8(&comm_ctrl.rx, data, len);  //数据入队
+    if((data[0] == COMM_ADDR_DEVICE) && (data[1] == CMD_WRITE_DATA))  //上位机存储数据做特殊处理
+    {
+        memcpy(mem_data.buf, data, len);
+        comm_len_data = len;
+    }
+    else
+    {
+        queue_input_u8(&comm_ctrl.rx, data, len);  //数据入队
+    }
+}
+/**
+* @brief  接收存储数据处理
+* @attention 
+*/
+static void comm_rx_data(void)
+{
+    uint8_t cmd = 0;
+    uint8_t crc8 = 0;
+    /* 有数据 */
+    if(comm_len_data)
+    {
+        cmd = mem_data.buf[1];
+        crc8 = crc_get_crc8(mem_data.buf, comm_len_data-1, 0xFF);
+        if(crc8 != mem_data.buf[comm_len_data-1])
+        {
+            return;
+        }
+        
+        comm_cmd(cmd, &mem_data.buf[2]);
+        comm_len_data = 0;
+    }
 }
 /**
 * @brief  接收数据处理
@@ -85,6 +117,40 @@ static void comm_rx(comm_data_t *qp, uint8_t addr)
         
         comm_cmd(cmd, &data_buf[2]);
     }
+}
+uint8_t comm_send_data[5000] = {0};
+/**
+* @brief  长数据发送
+* @attention 
+*/
+void comm_long_msg_tx(uint8_t cmd, uint8_t *data, uint16_t len)
+{
+    uint16_t cnt = 0;
+    uint8_t crc8 = 0;
+    
+    if(len == 0)
+    {
+        return;
+    }
+    if(__HAL_UART_GET_FLAG(&uart8_handle.uart, USART_FLAG_TC) != SET)  //上次发送未完成
+    {
+        return;
+    }
+    if(len > 2400)  //长度超出DMA缓存区
+    {
+        len = 2400;
+    }
+    
+    comm_send_data[cnt++] = (uint8_t)COMM_ADDR_CTRL;
+    comm_send_data[cnt++] = cmd;
+    comm_send_data[cnt++] = 0;
+    
+    memcpy(&(comm_send_data[cnt]), data, len);
+    cnt += len;
+    crc8 = crc_get_crc8(comm_send_data, cnt, 0xFF);
+    comm_send_data[cnt++] = crc8;
+
+    HAL_UART_Transmit_DMA(&uart8_handle.uart, comm_send_data, cnt);
 }
 /**
 * @brief  发送给上位机数据写入发送缓存
@@ -136,6 +202,7 @@ static uint16_t comm_tx(void)
 void comm_run(void)
 {
     comm_rx(&comm_ctrl, COMM_ADDR_DEVICE);
+    comm_rx_data();
     comm_tx();
 }
 /**

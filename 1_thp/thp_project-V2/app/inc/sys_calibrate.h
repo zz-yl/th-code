@@ -52,6 +52,17 @@ typedef enum
     CAL_STATE_STEP12,  //步骤12
     CAL_STATE_RECORD, //数据存储
 }calibrate_state_t;
+/**
+* @enum  calibrate_res_t
+* @brief 校准结果
+*/
+typedef enum
+{
+    CAL_RES_NULL,       //未校准
+    CAL_RES_RUN,        //校准中
+    CAL_RES_SUCCEED,    //校准成功
+    CAL_RES_FAILED,     //校准失败
+}calibrate_res_t;
 
 /**************************************************************************************************
 *                                      DATA TYPES
@@ -65,6 +76,7 @@ typedef struct
 {
     calibrate_cmd_t cmd;      //校准指令
     calibrate_state_t state;  //校准状态
+    calibrate_res_t   res;    //校准结果
     uint32_t cur_tim;         //当前时间
 }calibrate_ctrl_t;
 

@@ -33,7 +33,7 @@
 *                                      FUNCTION PROTOTYPES
 **************************************************************************************************/
 
-uint8_t crc_get_crc8(uint8_t *data, uint8_t len, uint8_t start);
+uint8_t crc_get_crc8(uint8_t *data, uint32_t len, uint8_t start);
 uint8_t crc_get_crc8_reverse(uint8_t *data, uint8_t len, uint8_t start);
 uint16_t crc_get_crc16(uint8_t *Ptr, uint8_t Len);
 

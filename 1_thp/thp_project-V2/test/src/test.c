@@ -18,6 +18,7 @@
 #include "thp_cfg.h"
 #include "comm_cmd.h"
 #include "comm.h"
+#include "comm_msg.h"
 
 /**************************************************************************************************
 *                                      MACROS DEFINE
@@ -150,7 +151,8 @@ static void test_motor_all_step(void)
 }
 static void test_xyz_100(void)
 {
-    static uint8_t i = 0;
+    static int8_t i = 0;
+    static int8_t up = 1;
     
     float pos[9][5] = 
     {
@@ -171,10 +173,14 @@ static void test_xyz_100(void)
         motor_pos_ctrl(MOTOR_2, pos[i][1]);
         motor_pos_ctrl(MOTOR_3, pos[i][2]);
         motor_pos_ctrl(MOTOR_4, pos[i][3]);
-        i++;
+        i += up;
         if(i > 8) //4\8
         {
-            i = 1;
+            up = -1;
+        }
+        else if(i == 0)
+        {
+            up = 1;
             test_ctrl.cnt++;
         }
     }
@@ -185,7 +191,8 @@ static void test_xyz_100(void)
 }
 static void test_xyz_60(void)
 {
-    static uint8_t i = 0;
+    static int8_t i = 0;
+    static int8_t up = 1;
     
     float pos[9][5] = 
     {
@@ -206,10 +213,14 @@ static void test_xyz_60(void)
         motor_pos_ctrl(MOTOR_2, pos[i][1]);
         motor_pos_ctrl(MOTOR_3, pos[i][2]);
         motor_pos_ctrl(MOTOR_4, pos[i][3]);
-        i++;
+        i += up;
         if(i > 8) //4\8
         {
-            i = 1;
+            up = -1;
+        }
+        else if(i == 0)
+        {
+            up = 1;
             test_ctrl.cnt++;
         }
     }
@@ -289,6 +300,8 @@ void test_run(void)
         case 33: mem_e2prom_read(test_ctrl.arr, test_ctrl.arr_len, (uint16_t)test_ctrl.ctrl); break;
         case 34: mem_e2prom_write(test_ctrl.arr, test_ctrl.arr_len, (uint16_t)test_ctrl.ctrl); break;
         case 41: comm_cmd(CMD_SET_SN, test_ctrl.sn); break;
+        case 42: comm_msg_MSG_POT_DATA(test_ctrl.arr); break;
+        
         case 71: M1_DIR(test_ctrl.ctrl);    break;
         case 72: M1_EN(test_ctrl.ctrl);     break;
         case 73: M1_SLEEP(test_ctrl.ctrl);  break;

@@ -30,7 +30,7 @@
 #define THP_VERSION_Z  0
 #define THP_VERSION_B  0
 
-#define THP_VERSION_I  1
+#define THP_VERSION_I  2
 
 /**
 * @enum 	thp_device_type_t 

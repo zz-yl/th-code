@@ -315,6 +315,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>sm_lock_tims,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>32</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>mem_data,0x10</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

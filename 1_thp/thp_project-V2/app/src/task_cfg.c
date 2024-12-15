@@ -69,6 +69,12 @@ TaskHandle_t task_handle_led;
 void task_dev(void *p_arg)
 {
     (void)p_arg;
+
+    mem_init();
+    device_init();
+//    comm_init();
+//    sm_sys_init();
+//    sm_motor_init();
     
     while(1)
     {

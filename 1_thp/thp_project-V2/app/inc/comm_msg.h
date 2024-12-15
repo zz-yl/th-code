@@ -35,5 +35,6 @@
 
 void comm_msg(uint8_t cmd);
 void comm_msg_data(uint8_t cmd, uint8_t value);
+uint16_t comm_msg_MSG_POT_DATA(uint8_t *data);
 
 #endif /* COMM_MSG_H_ */

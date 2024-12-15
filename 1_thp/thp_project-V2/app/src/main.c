@@ -34,8 +34,8 @@
 int main(void)
 {
     bsp_init();
-    mem_init();
-    device_init();
+//    mem_init();
+//    device_init();
     comm_init();
     sm_sys_init();
     sm_motor_init();

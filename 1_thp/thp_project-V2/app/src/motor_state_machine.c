@@ -52,8 +52,16 @@ static uint16_t trig_stop(void)
 static void entry_stop(void)
 {
     motor_stop_all();
-    ctrl_led(CTRL_GREEN);
-    IO_BREAK(1);
+    
+    if(sm_sys_state() == SYS_CALIBRATE)  //校准时青色灯,抱闸不关
+    {
+        ctrl_led(CTRL_CYAN);
+    }
+    else
+    {
+        ctrl_led(CTRL_GREEN);
+        IO_BREAK(1);
+    }
 }
 static void exit_stop(void)
 {
@@ -112,6 +120,10 @@ static uint16_t trig_run(void)
 static void entry_run(void)
 {
     ctrl_led(CTRL_BLUE);
+    if(sm_sys_state() == SYS_CALIBRATE)  //校准时青色灯
+    {
+        ctrl_led(CTRL_CYAN);
+    }
     IO_BREAK(0);
     motor_data.m1.state_r = MOTOR_RUN;
     motor_data.m2.state_r = MOTOR_RUN;

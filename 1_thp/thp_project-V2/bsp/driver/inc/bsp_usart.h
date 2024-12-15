@@ -21,32 +21,36 @@
 *                                      MACROS DEFINE
 **************************************************************************************************/
 
-#define UART_DMA_RX_SIZE  600  //串口DMA接收数据缓存长度
-#define UART_DMA_TX_SIZE  600  //串口DMA发送数据缓存长度
+#define UART_DMA_RX_SIZE  5000  //串口DMA接收数据缓存长度
+#define UART_DMA_TX_SIZE  5000  //串口DMA发送数据缓存长度
 
 /**************************************************************************************************
 *                                      DATA TYPES
 **************************************************************************************************/
 
+/**
+* @struct  uart_handle_t
+* @brief   串口句柄
+*/
+typedef struct
+{
+    UART_HandleTypeDef uart;
+    DMA_HandleTypeDef  dma_tx;
+    DMA_HandleTypeDef  dma_rx;
+}uart_handle_t;
+
 /**************************************************************************************************
 *                                      GLOBAL VARIABLES
 **************************************************************************************************/
+
+extern uart_handle_t uart8_handle;
 
 /**************************************************************************************************
 *                                      FUNCTION PROTOTYPES
 **************************************************************************************************/
 
-void uart3_init(void);
-void uart4_init(void);
-void uart5_init(void);
-void uart6_init(void);
-void uart7_init(void);
 void uart8_init(void);
-uint16_t uart3_send(uint8_t *data, uint16_t len);
-uint16_t uart4_send(uint8_t *data, uint16_t len);
-uint16_t uart5_send(uint8_t *data, uint16_t len);
-uint16_t uart6_send(uint8_t *data, uint16_t len);
-uint16_t uart7_send(uint8_t *data, uint16_t len);
 uint16_t uart8_send(uint8_t *data, uint16_t len);
+uint32_t uart8_send_data(uint8_t *data, uint32_t len, uint32_t id, uint32_t cmd);
 
 #endif /* BSP_USART_H_ */

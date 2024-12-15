@@ -14,6 +14,7 @@
 #include "motor_state_machine.h"
 #include "sys_calibrate.h"
 #include "motor.h"
+#include "control.h"
 
 /**************************************************************************************************
 *                                      MACROS DEFINE
@@ -100,7 +101,7 @@ static void entry_calibrate(void)
 }
 static void exit_calibrate(void)
 {
-    
+    ctrl_led(CTRL_GREEN);
 }
 /* engineer */
 static void work_engineer(void)

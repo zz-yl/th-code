@@ -14,6 +14,7 @@
 #include "device_io.h"
 #include "motor.h"
 #include "memory.h"
+#include "sys_calibrate.h"
 
 /**************************************************************************************************
 *                                      MACROS DEFINE
@@ -125,6 +126,12 @@ static uint16_t comm_msg_MSG_DEVICE_STATE(uint8_t *data)
     
     return len;
 }
+static uint16_t comm_msg_MSG_POT_CALIBRATE(uint8_t *data)
+{
+    uint16_t len = 0;
+    
+    return len;
+}
 static uint16_t comm_msg_MSG_REPLY_SN(uint8_t *data)
 {
     uint16_t len = 0;
@@ -200,6 +207,38 @@ static uint16_t comm_msg_MSG_CALIBRATE_DATA(uint8_t *data)
     
     return len;
 }
+static uint16_t comm_msg_MSG_POT_STATE(uint8_t *data)
+{
+    uint16_t len = 0;
+    
+    data[len++] = cal_ctrl.res;
+    
+    return len;
+}
+uint16_t comm_msg_MSG_POT_DATA(uint8_t *data)
+{
+    uint16_t len = 2400;
+    
+    comm_long_msg_tx(MSG_POT_DATA, (uint8_t *)mem_buf_pot, len);
+    
+    return len;
+}
+static uint16_t comm_msg_MSG_REPLY_WRITE_DATA(uint8_t *data, uint8_t value)
+{
+    uint16_t len = 0;
+    
+    data[len++] = value;
+    
+    return len;
+}
+//static uint16_t comm_msg_MSG_DATA(uint8_t *data)
+//{
+//    uint16_t len = 0;
+//    
+//    data[len++] = cal_ctrl.res;
+//    
+//    return len;
+//}
 /*数据打包================================================================================================*/
 /**
 * @brief 填充发送信息
@@ -218,6 +257,7 @@ void comm_msg(uint8_t cmd)
         case MSG_MOTOR_POS           : len = comm_msg_MSG_MOTOR_POS(data);            break;
         case MSG_TYPE                : len = comm_msg_MSG_TYPE(data);                 break;
         case MSG_DEVICE_STATE        : len = comm_msg_MSG_DEVICE_STATE(data);         break;
+        case MSG_POT_CALIBRATE       : len = comm_msg_MSG_POT_CALIBRATE(data);        break;
         case MSG_REPLY_SN            : len = comm_msg_MSG_REPLY_SN(data);             break;
         case MSG_SN                  : len = comm_msg_MSG_SN(data);                   break;
         case MSG_VERSION             : len = comm_msg_MSG_VERSION(data);              break;
@@ -225,6 +265,10 @@ void comm_msg(uint8_t cmd)
         case MSG_ALL_TIME            : len = comm_msg_MSG_ALL_TIME(data);             break;
 //        case MSG_REPLY_CALIBRATE_DATA: len = comm_msg_MSG_REPLY_CALIBRATE_DATA(data); break;
         case MSG_CALIBRATE_DATA      : len = comm_msg_MSG_CALIBRATE_DATA(data);       break;
+        case MSG_POT_STATE           : len = comm_msg_MSG_POT_STATE(data);            break;
+        case MSG_POT_DATA            : len = comm_msg_MSG_POT_DATA(data);             return;
+//        case MSG_REPLY_WRITE_DATA    : len = comm_msg_MSG_REPLY_WRITE_DATA(data);     break;
+//        case MSG_DATA                : len = comm_msg_MSG_DATA(data);                 break;
         default:break;
     }
 
@@ -242,6 +286,7 @@ void comm_msg_data(uint8_t cmd, uint8_t value)
     switch(cmd)
     {
         case MSG_REPLY_CALIBRATE_DATA: len = comm_msg_MSG_REPLY_CALIBRATE_DATA(data, value); break;
+        case MSG_REPLY_WRITE_DATA    : len = comm_msg_MSG_REPLY_WRITE_DATA(data, value);     break;
         default:break;
     }
 

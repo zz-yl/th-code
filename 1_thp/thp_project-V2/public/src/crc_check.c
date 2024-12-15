@@ -35,7 +35,7 @@
 * @param[in] start:多项式初值,0x00或0xFF
 * @retval    计算结果
 */
-uint8_t crc_get_crc8(uint8_t *data, uint8_t len, uint8_t start)
+uint8_t crc_get_crc8(uint8_t *data, uint32_t len, uint8_t start)
 {
     uint8_t crc = 0xFF;  //CRC字节
     const uint8_t tab[] = {  //CRC值表

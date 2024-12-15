@@ -32,44 +32,6 @@ typedef enum
     COMM_ADDR_DEVICE  = 0x32,
 }comm_addr_t;
 
-///**
-//* @enum    comm_cmd_t
-//* @brief   指令,即上位机->下位机
-//*/
-//typedef enum
-//{
-//    CMD_CTRL_MOTOR_POS      = 0x01,  ///< 电钢长度控制
-//    CMD_CTRL_TCP            = 0x02,  ///< TCP控制
-//    CMD_READ_MOTOR_POS      = 0x04,  ///< 读取电钢长度
-//    CMD_READ_TCP            = 0x08,  ///< 读取TCP位姿
-//    CMD_STOP_MOTOR          = 0x10,  ///< 停止运动
-//    CMD_READ_MOTOR_STATE    = 0x11,  ///< 查询机械臂状态
-//    CMD_CLEAR_MOTOR_PROTECT = 0x12,  ///< 清堵转
-//    CMD_SEND_CALIBRATE_DATA = 0x14,  ///< 发送校准参数
-//    CMD_SET_SN              = 0x18,  ///< 设置SN号
-//    CMD_GET_VERSION         = 0x22,  ///< 查询软件版本号
-//    CMD_GET_SN              = 0x24,  ///< 查询SN号
-//}comm_cmd_t;
-
-///**
-//* @enum    comm_msg_t
-//* @brief   信息,即下位机->上位机
-//*/
-//typedef enum
-//{
-//    MSG_REPLY_MOTOR          = 0x01,  ///< 收到电钢长度控制
-//    MSG_REPLY_TCP            = 0x02,  ///< 收到TCP控制命令
-//    MSG_MOTOR_POS            = 0x04,  ///< 电钢长度
-//    MSG_TCP_POS              = 0x08,  ///< TCP位姿
-//    MSG_REPLY_STOP           = 0x10,  ///< 收到停止运动
-//    MSG_MOTOR_STATE          = 0x11,  ///< 机械臂状态
-//    MSG_REPLY_PROTECT        = 0x12,  ///< 收到清堵转
-//    MSG_REPLY_CALIBRATE_DATA = 0x14,  ///< 收到校准参数
-//    MSG_REPLY_SN             = 0x18,  ///< 返回设置SN号
-//    MSG_VERSION              = 0x22,  ///< 返回软件版本号
-//    MSG_SN                   = 0x24,  ///< 返回SN号
-//}comm_msg_t;
-
 /**
 * @enum    comm_cmd_t
 * @brief   指令,即上位机->下位机
@@ -82,7 +44,7 @@ typedef enum
     CMD_READ_MOTOR_POS         = 0x05, ///< 读取电机位置及状态
     CMD_READ_TYPE              = 0x06, ///< 读取装置型号
     CMD_READ_DEVICE_STATE      = 0x07, ///< 读取设备状态
-    CMD_MOTOR_CALIBRATE        = 0x0A, ///< 校准
+    CMD_POT_CALIBRATE          = 0x0A, ///< 校准
     CMD_SET_SN                 = 0x0B, ///< 设置SN号(例：010602023090001)
     CMD_READ_SN                = 0x0C, ///< 查询SN号
     CMD_READ_VERSION           = 0x0D, ///< 查询软件版本号
@@ -90,6 +52,11 @@ typedef enum
     CMD_READ_ALL_TIME          = 0x0F, ///< 电机运行总时间
     CMD_WRITE_CALIBRATE_DATA   = 0x11, ///< 写校准参数
     CMD_READ_CALIBRATE_DATA    = 0x12, ///< 读校准参数
+    CMD_READ_POT_STATE         = 0x13, ///< 读电位计校准状态
+    CMD_READ_POT_DATA          = 0x14, ///< 读电位计校准数据
+    
+    CMD_WRITE_DATA             = 0x21, ///< 写数据到下位机
+    CMD_READ_DATA              = 0x22, ///< 读取下位机存储数据
 }comm_cmd_t;
 
 /**
@@ -104,6 +71,7 @@ typedef enum
     MSG_MOTOR_POS            = 0x85,  ///< 电机位置及状态
     MSG_TYPE                 = 0x86,  ///< 装置型号
     MSG_DEVICE_STATE         = 0x87,  ///< 设备状态
+    MSG_POT_CALIBRATE        = 0x8A,  ///< 收到校准指令
     MSG_REPLY_SN             = 0x8B,  ///< 设置SN号成功
     MSG_SN                   = 0x8C,  ///< SN号
     MSG_VERSION              = 0x8D,  ///< 软件版本号
@@ -111,6 +79,11 @@ typedef enum
     MSG_ALL_TIME             = 0x8F,  ///< 电机运行总时间
     MSG_REPLY_CALIBRATE_DATA = 0x91,  ///< 校准参数接收及写入状态
     MSG_CALIBRATE_DATA       = 0x92,  ///< 校准参数
+    MSG_POT_STATE            = 0x93,  ///< 电位计校准状态
+    MSG_POT_DATA             = 0x94,  ///< 电位计校准数据
+    
+    MSG_REPLY_WRITE_DATA     = 0xA1,  ///< 写数据状态反馈
+    MSG_DATA                 = 0xA2,  ///< 读取下位机存储数据
 }comm_msg_t;
 
 /**************************************************************************************************

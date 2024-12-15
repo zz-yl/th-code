@@ -54,5 +54,6 @@ typedef struct
 void comm_fill_msg(uint8_t cmd, uint8_t *data, uint8_t len);
 void comm_run(void);
 void comm_init(void);
+void comm_long_msg_tx(uint8_t cmd, uint8_t *data, uint16_t len);
 
 #endif /* COMM_H_ */

@@ -193,14 +193,14 @@ void motor_en(uint8_t cmd)
 //{
 //    return MOTOR_MICROSTEP * 200.0f * speed;
 //}
-/**
-* @brief  速度渐变
-* @attention 
-*/
-static void motor_speed_change(motor_t *motor)
-{
-    
-}
+///**
+//* @brief  速度渐变
+//* @attention 
+//*/
+//static void motor_speed_change(motor_t *motor)
+//{
+//    
+//}
 #ifdef MOTOR_TIM_CTRL
 /**
 * @brief  速度上限控制,用于电机运动同步
@@ -467,6 +467,7 @@ void motor_init(void)
     vTaskDelay(1000);
     motor_init_pos();
     ctrl_led(CTRL_GREEN);
+    IO_BREAK(1);
 }
 /**
 * @brief  电机模块运行

@@ -106,7 +106,9 @@ static void comm_cmd_CMD_READ_DEVICE_STATE(uint8_t *data)
 }
 static void comm_cmd_CMD_MOTOR_CALIBRATE(uint8_t *data)
 {
-    cal_ctrl.cmd = (calibrate_cmd_t)data[0];
+    cal_ctrl.cmd = (calibrate_cmd_t)data[1];
+    /* 发送应答信息 */
+    comm_msg(MSG_POT_CALIBRATE);
 }
 static void comm_cmd_CMD_SET_SN(uint8_t *data)
 {
@@ -145,6 +147,84 @@ static void comm_cmd_CMD_READ_CALIBRATE_DATA(uint8_t *data)
 {
     comm_msg(MSG_CALIBRATE_DATA);
 }
+static void comm_cmd_CMD_READ_POT_STATE(uint8_t *data)
+{
+    comm_msg(MSG_POT_STATE);
+}
+static void comm_cmd_CMD_READ_POT_DATA(uint8_t *data)
+{
+    comm_msg(MSG_POT_DATA);
+}
+/**
+* @brief  上位机写数据处理
+* @attention 
+*/
+static void comm_cmd_CMD_WRITE_DATA(uint8_t *data)
+{
+    uint16_t id = 0;
+    uint16_t len = 0;
+    
+    id = ((uint16_t)data[1] << 8) + data[2];
+    len = ((uint16_t)data[3] << 8) + data[4];
+    
+    if((id > MEM_LEN_DATA_ADDR-1) || (id == 0))  //id超上限无效
+    {
+        comm_msg_data(MSG_REPLY_WRITE_DATA, 2);
+        return;
+    }
+    
+    if(mem_data.addr[id+1])  //下一个id有值
+    {
+        if(len > (mem_data.addr[id+1] - mem_data.addr[id]))  //数据超长
+        {
+            comm_msg_data(MSG_REPLY_WRITE_DATA, 3);
+            return;
+        }
+    }
+    else
+    {
+        if(len > mem_data.size)  //数据超长
+        {
+            comm_msg_data(MSG_REPLY_WRITE_DATA, 3);
+            return;
+        }
+    }
+    comm_msg_data(MSG_REPLY_WRITE_DATA, 0);  //接收数据完成
+    //分配地址和存储空间
+    if(id > 0)
+    {
+        mem_data.addr[id] = mem_data.addr[id-1] + mem_data.len[id-1] + 2;  //包含crc校验字节
+    }
+    mem_data.len[id] = len;
+    mem_e2prom_write((uint8_t *)mem_data.addr, MEM_LEN_DATA_ADDR, MEM_ADDR_DATA_ADDR);
+    mem_e2prom_write((uint8_t *)mem_data.len, MEM_LEN_DATA_LEN, MEM_ADDR_DATA_LEN);
+    mem_e2prom_write((uint8_t *)(&mem_data.buf[7]), mem_data.len[id], mem_data.addr[id]);
+    comm_msg_data(MSG_REPLY_WRITE_DATA, 1);  //写入数据完成
+}
+/**
+* @brief  上位机读数据处理
+* @attention 
+*/
+static void comm_cmd_CMD_READ_DATA(uint8_t *data)
+{
+    uint16_t id = 0;
+    
+    id = ((uint16_t)data[1] << 8) + data[2];
+    
+    if(id > MEM_LEN_DATA_ADDR)  //id超上限
+    {
+        uart8_send_data(mem_data.buf, 0, id, MSG_DATA);
+        return;
+    }
+    if(mem_data.addr[id] == 0)  //无数据
+    {
+        uart8_send_data(mem_data.buf, 0, id, MSG_DATA);
+        return;
+    }
+    mem_e2prom_read(mem_data.buf, mem_data.len[id], mem_data.addr[id]);
+    uart8_send_data(mem_data.buf, mem_data.len[id], id, MSG_DATA);
+}
+
 /*指令解析================================================================================================*/
 /**
 * @brief  指令执行
@@ -160,7 +240,7 @@ void comm_cmd(uint16_t cmd, uint8_t *data)
         case CMD_READ_MOTOR_POS        : comm_cmd_CMD_READ_MOTOR_POS(data);         break;
         case CMD_READ_TYPE             : comm_cmd_CMD_READ_TYPE(data);              break;
         case CMD_READ_DEVICE_STATE     : comm_cmd_CMD_READ_DEVICE_STATE(data);      break;
-        case CMD_MOTOR_CALIBRATE       : comm_cmd_CMD_MOTOR_CALIBRATE(data);        break;
+        case CMD_POT_CALIBRATE         : comm_cmd_CMD_MOTOR_CALIBRATE(data);        break;
         case CMD_SET_SN                : comm_cmd_CMD_SET_SN(data);                 break;
         case CMD_READ_SN               : comm_cmd_CMD_READ_SN(data);                break;
         case CMD_READ_VERSION          : comm_cmd_CMD_READ_VERSION(data);           break;
@@ -168,6 +248,10 @@ void comm_cmd(uint16_t cmd, uint8_t *data)
         case CMD_READ_ALL_TIME         : comm_cmd_CMD_READ_ALL_TIME(data);          break;
         case CMD_WRITE_CALIBRATE_DATA  : comm_cmd_CMD_WRITE_CALIBRATE_DATA(data);   break;
         case CMD_READ_CALIBRATE_DATA   : comm_cmd_CMD_READ_CALIBRATE_DATA(data);    break;
+        case CMD_READ_POT_STATE        : comm_cmd_CMD_READ_POT_STATE(data);         break;
+        case CMD_READ_POT_DATA         : comm_cmd_CMD_READ_POT_DATA(data);          break;
+        case CMD_WRITE_DATA            : comm_cmd_CMD_WRITE_DATA(data);             break;
+        case CMD_READ_DATA             : comm_cmd_CMD_READ_DATA(data);              break;
         default: break;
     }
 }

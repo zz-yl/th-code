@@ -39,11 +39,11 @@ typedef struct
     uint32_t data3;
     uint32_t data4;
     uint32_t cnt;
-    uint8_t arr[50];
+    uint8_t arr[2000];
     uint16_t arr_len;
     char cpu_state1[400];
     char cpu_state2[400];
-    char sn[20];
+    uint8_t sn[20];
 }test_ctrl_t;
 
 /**************************************************************************************************

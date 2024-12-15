@@ -60,6 +60,7 @@ void cal_pot(void)
     {
         case CAL_STATE_FREE:
             cal_ctrl.state = CAL_STATE_START;
+            cal_ctrl.res = CAL_RES_RUN;
             break;
         case CAL_STATE_START:  //打开抱闸
         {
@@ -134,8 +135,6 @@ void cal_pot(void)
                 {
                     device_type = SYS_LENGTH_60;
                 }
-                mem_buf[0] = device_type;
-                mem_e2prom_write(mem_buf, 1, MEM_ADDR_TYPE);
                 encoder_clear();
 
                 cal_ctrl.state = CAL_STATE_STEP5;
@@ -199,7 +198,7 @@ void cal_pot(void)
             }
             break;
         case CAL_STATE_STEP7:  //前30个点0.1mm
-            if(cal_ctrl.cur_tim >= 1500)
+            if((cal_ctrl.cur_tim >= 1500) && (sm_motor_state() == MOTOR_STATE_STOP))
             {
                 cal_tim_clear();
                 device_list.x_pos1[i] = in_filter_data.pot1;
@@ -222,7 +221,7 @@ void cal_pot(void)
             }
             break;
         case CAL_STATE_STEP8:  //中间点1mm
-            if(cal_ctrl.cur_tim >= 1500)
+            if((cal_ctrl.cur_tim >= 1500) && (sm_motor_state() == MOTOR_STATE_STOP))
             {
                 cal_tim_clear();
                 device_list.x_pos1[i] = in_filter_data.pot1;
@@ -245,7 +244,7 @@ void cal_pot(void)
             }
             break;
         case CAL_STATE_STEP9:  //后30个点0.1mm
-            if(cal_ctrl.cur_tim >= 1500)
+            if((cal_ctrl.cur_tim >= 1500) && (sm_motor_state() == MOTOR_STATE_STOP))
             {
                 cal_tim_clear();
                 device_list.x_pos1[i] = in_filter_data.pot1;
@@ -268,28 +267,44 @@ void cal_pot(void)
             }
             break;
         case CAL_STATE_STEP10:  //记录数据,关闭抱闸,编码器清零,初始化电机位置
-            if(cal_ctrl.cur_tim >= 1500)
+            if((cal_ctrl.cur_tim >= 1500) && (sm_motor_state() == MOTOR_STATE_STOP))
             {
                 cal_tim_clear();
                 sm_motor_toggle(MOTOR_STATE_STOP);
                 IO_BREAK(1);
                 
-                for(i=0; i<150; i++)
+                for(i=0; i<table_max[device_type]-1; i++)  //判断数据是否递减
                 {
-                    mem_buf_pot[i]     = (uint32_t)device_list.x_pos1[i];
-                    mem_buf_pot[150+i] = (uint32_t)device_list.x_pos2[i];
-                    mem_buf_pot[300+i] = (uint32_t)device_list.x_pos3[i];
-                    mem_buf_pot[450+i] = (uint32_t)device_list.x_pos4[i];
+                    if((device_list.x_pos1[i] <= device_list.x_pos1[i+1])
+                        || (device_list.x_pos2[i] <= device_list.x_pos2[i+1])
+                        || (device_list.x_pos3[i] <= device_list.x_pos3[i+1])
+                        || (device_list.x_pos4[i] <= device_list.x_pos4[i+1]))
+                    {
+                        cal_ctrl.state = CAL_STATE_FREE;
+                        cal_ctrl.cmd = CAL_CMD_CANCEL;
+                        cal_ctrl.res = CAL_RES_FAILED;
+                        return;
+                    }
                 }
+                
                 motor_init_pos();
                 cal_ctrl.state = CAL_STATE_RECORD;
             }
             break;
         case CAL_STATE_RECORD:
-            mem_e2prom_write((uint8_t *)mem_buf_pot, 2400, MEM_ADDR_POT);
-            motor_en(0);
+            mem_buf[0] = device_type;  //装置类型写入缓存
+            mem_e2prom_write(mem_buf, 1, MEM_ADDR_TYPE);  //装置类型写入E2
+            for(i=0; i<150; i++)  //电位计校准数据写入缓存
+            {
+                mem_buf_pot[i]     = (uint32_t)device_list.x_pos1[i];
+                mem_buf_pot[150+i] = (uint32_t)device_list.x_pos2[i];
+                mem_buf_pot[300+i] = (uint32_t)device_list.x_pos3[i];
+                mem_buf_pot[450+i] = (uint32_t)device_list.x_pos4[i];
+            }
+            mem_e2prom_write((uint8_t *)mem_buf_pot, 2400, MEM_ADDR_POT);  //电位计校准数据写入E2
             cal_ctrl.state = CAL_STATE_FREE;
             cal_ctrl.cmd = CAL_CMD_CANCEL;
+            cal_ctrl.res = CAL_RES_SUCCEED;
             break;
         default: break;
     }
@@ -304,8 +319,16 @@ void cal_run(void)
     switch(cal_ctrl.cmd)
     {
         case CAL_CMD_POT: cal_pot(); break;
-        default: sm_sys_toggle(SYS_STANDBY); cal_ctrl.state = CAL_STATE_FREE; break;
+        default: 
+            sm_sys_toggle(SYS_STANDBY);
+            cal_ctrl.state = CAL_STATE_FREE;
+            if(cal_ctrl.res != CAL_RES_SUCCEED)  //判断校准是否失败
+            {
+                cal_ctrl.res = CAL_RES_FAILED;
+            }
+            break;
     }
     cal_tim_add();
+    
 }
 
