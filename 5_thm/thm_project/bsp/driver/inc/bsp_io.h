@@ -19,23 +19,53 @@
 **************************************************************************************************/
 
 /* LED小灯 */
-#define IO_LED_RUN(cmd)     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_5, (cmd ? GPIO_PIN_SET : GPIO_PIN_RESET))
-#define IO_LED_RUN_TOGGLE   HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_5)
+#define IO_LED_RUN(cmd)     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, (cmd ? GPIO_PIN_SET : GPIO_PIN_RESET))
+#define IO_LED_RUN_TOGGLE   HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_3)
 
 /* 输出 */
-#define IO_LED_R(cmd)   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, (cmd ? GPIO_PIN_SET : GPIO_PIN_RESET))  //RGB灯-R
-#define IO_LED_G(cmd)   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, (cmd ? GPIO_PIN_SET : GPIO_PIN_RESET))  //RGB灯-G
-#define IO_LED_B(cmd)   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_15, (cmd ? GPIO_PIN_SET : GPIO_PIN_RESET))  //RGB灯-B
-#define IO_POWER(cmd)   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0, (cmd ? GPIO_PIN_SET : GPIO_PIN_RESET))   //电机电源控制
-#define IO_BREAK(cmd)   HAL_GPIO_WritePin(GPIOH, GPIO_PIN_1, (cmd ? GPIO_PIN_SET : GPIO_PIN_RESET))   //抱闸控制
-#define IO_BUZZER(cmd)  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, (cmd ? GPIO_PIN_SET : GPIO_PIN_RESET))   //蜂鸣器
-#define IO_E2_WP(cmd)   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, (cmd ? GPIO_PIN_SET : GPIO_PIN_RESET))   //E2读写使能
+#define IO_LED1(cmd)        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED2(cmd)        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_15, (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED3(cmd)        HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED4(cmd)        HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED5(cmd)        HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED6(cmd)        HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED7(cmd)        HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6,  (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED8(cmd)        HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7,  (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED9(cmd)        HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8,  (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED10(cmd)       HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9,  (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED11(cmd)       HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6,  (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED12(cmd)       HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7,  (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED13(cmd)       HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9,  (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED14(cmd)       HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED15(cmd)       HAL_GPIO_WritePin(GPIOE, GPIO_PIN_13, (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED16(cmd)       HAL_GPIO_WritePin(GPIOE, GPIO_PIN_14, (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED17(cmd)       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
+#define IO_LED18(cmd)       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, (cmd ? GPIO_PIN_RESET : GPIO_PIN_SET))
 
-#define IO_BUZZER_TOGGLE  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_1)   //蜂鸣器
+#define IO_LED1_TOGGLE      HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14)
+#define IO_LED2_TOGGLE      HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_15)
+#define IO_LED3_TOGGLE      HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12)
+#define IO_LED4_TOGGLE      HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13)
+#define IO_LED5_TOGGLE      HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14)
+#define IO_LED6_TOGGLE      HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15)
+#define IO_LED7_TOGGLE      HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6)
+#define IO_LED8_TOGGLE      HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_7)
+#define IO_LED9_TOGGLE      HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8)
+#define IO_LED10_TOGGLE     HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9)
+#define IO_LED11_TOGGLE     HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_6)
+#define IO_LED12_TOGGLE     HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_7)
+#define IO_LED13_TOGGLE     HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_9)
+#define IO_LED14_TOGGLE     HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_11)
+#define IO_LED15_TOGGLE     HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_13)
+#define IO_LED16_TOGGLE     HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_14)
+#define IO_LED17_TOGGLE     HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_10)
+#define IO_LED18_TOGGLE     HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_11)
 
 /* 输入 */
-#define IO_MOTOR_EN     HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3)  //电机使能(脚踏)
-#define IO_SCRAM        HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_3)  //急停按钮
+#define IO_KEY1     (!HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_0))
+#define IO_KEY2     (!HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_1))
+#define IO_KEY3     (!HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_2))
+#define IO_KEY4     (!HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_3))
 
 /**************************************************************************************************
 *                                      DATA TYPES

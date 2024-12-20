@@ -21,34 +21,63 @@
 *                                      MACROS DEFINE
 **************************************************************************************************/
 
+#define LED_NUM  18
+#define FRQ_TIMER  30000  //定时器频率
+
 /**
-* @enum 	CTRL_COLOR 
-* @brief  	LED颜色控制
+* @enum     led_id_t 
+* @brief    LEDid
 */
 typedef enum
 {
-    CTRL_BLACK,   ///< 黑
-    CTRL_RED,     ///< 红
-    CTRL_GREEN,   ///< 绿
-    CTRL_BLUE,    ///< 蓝
-    CTRL_YELLOW,  ///< 黄
-    CTRL_PURPLE,  ///< 紫
-    CTRL_CYAN,    ///< 青
-    CTRL_WHITE,   ///< 白
-}CTRL_COLOR;
+    LED_ID_1,
+    LED_ID_2,
+    LED_ID_3,
+    LED_ID_4,
+    LED_ID_5,
+    LED_ID_6,
+    LED_ID_7,
+    LED_ID_8,
+    LED_ID_9,
+    LED_ID_10,
+    LED_ID_11,
+    LED_ID_12,
+    LED_ID_13,
+    LED_ID_14,
+    LED_ID_15,
+    LED_ID_16,
+    LED_ID_17,
+    LED_ID_18,
+}led_id_t;
 
 /**************************************************************************************************
 *                                      DATA TYPES
 **************************************************************************************************/
 
+/**
+* @struct   led_data_t 
+* @brief    LED控制,frequency
+*/
+typedef struct
+{
+    uint8_t state[LED_NUM];  //led状态,1:开;0:关
+    uint16_t frq[LED_NUM];   //led闪烁频率
+    uint16_t cnt[LED_NUM];   //led周期计数
+    uint16_t tim[LED_NUM];   //led计时
+}led_data_t;
+
 /**************************************************************************************************
 *                                      GLOBAL VARIABLES
 **************************************************************************************************/
+
+extern led_data_t led_data;
 
 /**************************************************************************************************
 *                                      FUNCTION PROTOTYPES
 **************************************************************************************************/
 
-void ctrl_led(uint16_t color);
+void led_run(void);
+void led_scan(void);
+void led_ctrl_all(uint8_t state, uint16_t frq);
 
 #endif /* CONTROL_H_ */

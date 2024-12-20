@@ -43,7 +43,6 @@ void bsp_init(void)
     tim6_init(1000-1, 240-1);  //定时器初始化
 
     uart8_init();
-    i2c3_init();
     
-//    tim5_init(500-1, 24-1);  //编码器定时初始化
+    tim5_init(800-1, 10-1);  //编码器定时初始化
 }

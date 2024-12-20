@@ -399,9 +399,14 @@
               <FilePath>..\..\app\src\control.c</FilePath>
             </File>
             <File>
-              <FileName>comm.c</FileName>
+              <FileName>terminal.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\app\src\comm.c</FilePath>
+              <FilePath>..\..\app\src\terminal.c</FilePath>
+            </File>
+            <File>
+              <FileName>memory.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\app\src\memory.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -432,6 +437,11 @@
               <FilePath>..\..\bsp\driver\src\bsp_mpu.c</FilePath>
             </File>
             <File>
+              <FileName>bsp_key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\bsp\driver\src\bsp_key.c</FilePath>
+            </File>
+            <File>
               <FileName>bsp_timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\bsp\driver\src\bsp_timer.c</FilePath>
@@ -442,19 +452,9 @@
               <FilePath>..\..\bsp\driver\src\bsp_usart.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_spi.c</FileName>
+              <FileName>bsp_stflash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\bsp\driver\src\bsp_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_qspi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\bsp\driver\src\bsp_qspi.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\bsp\driver\src\bsp_i2c.c</FilePath>
+              <FilePath>..\..\bsp\driver\src\bsp_stflash.c</FilePath>
             </File>
             <File>
               <FileName>bsp_cfg.c</FileName>
@@ -582,19 +582,19 @@
               <FilePath>..\..\bsp\STM32H7xx_HAL_Driver\src\stm32h7xx_hal_fdcan.c</FilePath>
             </File>
             <File>
+              <FileName>stm32h7xx_hal_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\bsp\STM32H7xx_HAL_Driver\src\stm32h7xx_hal_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32h7xx_hal_flash_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\bsp\STM32H7xx_HAL_Driver\src\stm32h7xx_hal_flash_ex.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32h7xx_hal_gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\bsp\STM32H7xx_HAL_Driver\src\stm32h7xx_hal_gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7xx_hal_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\bsp\STM32H7xx_HAL_Driver\src\stm32h7xx_hal_i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7xx_hal_i2c_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\bsp\STM32H7xx_HAL_Driver\src\stm32h7xx_hal_i2c_ex.c</FilePath>
             </File>
             <File>
               <FileName>stm32h7xx_hal_mdma.c</FileName>
@@ -612,11 +612,6 @@
               <FilePath>..\..\bsp\STM32H7xx_HAL_Driver\src\stm32h7xx_hal_pwr_ex.c</FilePath>
             </File>
             <File>
-              <FileName>stm32h7xx_hal_qspi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\bsp\STM32H7xx_HAL_Driver\src\stm32h7xx_hal_qspi.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32h7xx_hal_rcc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\bsp\STM32H7xx_HAL_Driver\src\stm32h7xx_hal_rcc.c</FilePath>
@@ -625,16 +620,6 @@
               <FileName>stm32h7xx_hal_rcc_ex.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\bsp\STM32H7xx_HAL_Driver\src\stm32h7xx_hal_rcc_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7xx_hal_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\bsp\STM32H7xx_HAL_Driver\src\stm32h7xx_hal_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32h7xx_hal_spi_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\bsp\STM32H7xx_HAL_Driver\src\stm32h7xx_hal_spi_ex.c</FilePath>
             </File>
             <File>
               <FileName>stm32h7xx_hal_tim.c</FileName>

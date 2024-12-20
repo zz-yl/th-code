@@ -12,6 +12,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+#include "control.h"
 #include "test.h"
 
 /**************************************************************************************************
@@ -71,7 +72,9 @@ void task_dev(void *p_arg)
     
     while(1)
     {
-        vTaskDelay(TAST_TIMS_DEV);
+        led_run();
+        key_run();
+        vTaskDelay(TASK_TIM);
     }
 }
 /**
@@ -107,10 +110,12 @@ void task_sys(void *p_arg)
 void task_comm(void *p_arg)
 {
     (void)p_arg;
+    terminal_init();
 
     while(1)
     {
-        comm_run();
+        terminal_run();
+
         vTaskDelay(TASK_TIM);
     }
 }

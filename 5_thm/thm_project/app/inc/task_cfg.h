@@ -17,13 +17,9 @@
 
 #include "bsp_cfg.h"
 #include "bsp_init.h"
-#include "device_core.h"
-#include "sys_state_machine.h"
-#include "motor_state_machine.h"
-#include "motor.h"
-#include "comm.h"
-#include "memory.h"
+#include "terminal.h"
 #include "test.h"
+#include "memory.h"
 
 /**************************************************************************************************
 *                                      MACROS DEFINE

@@ -13,6 +13,7 @@
 
 #include "bsp_timer.h"
 #include "bsp_cfg.h"
+#include "control.h"
 
 /**************************************************************************************************
 *                                      MACROS DEFINE
@@ -143,7 +144,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if (htim->Instance == TIM5)
     {
-//        encoder_call();
+        led_scan();
     }
     if (htim->Instance == TIM6)
     {
@@ -152,11 +153,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     else if (htim->Instance == TIM7)
     {
         FreeRTOSRunTimeTicks++;  /* freertos用于统计cpu占用率计时 */
-        
-        if(flag_buzzer)/* 蜂鸣器 */
-        {
-            IO_BUZZER_TOGGLE;
-        }
     }
 }
 /**
@@ -166,27 +162,4 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void ConfigureTimeForRunTimeStats(void)
 {
     tim7_init(6-1, 4000-1);
-}
-
-/**
-* @brief  蜂鸣器频率控制
-* @attention 
-*/
-void tim_buzzer_frq(float frq)
-{
-    float tmp = 0;
-    uint32_t arr = 0;
-    
-    if(frq > 0)
-    {
-        frq *= 2;
-        tmp = TIM_CLOCK / 4000 / frq;
-        arr = (uint32_t)(tmp - 1);
-        if(arr > 0xFFFF)
-        {
-            arr = 0xFFFF;
-        }
-    }
-    __HAL_TIM_SET_AUTORELOAD(&tim7_handle, arr);
-    __HAL_TIM_SET_COUNTER(&tim7_handle, 0);  //计数器重新计数
 }

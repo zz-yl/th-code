@@ -151,8 +151,8 @@ uint8_t system_clock_config(void)
     rcc_osc_init_struct.HSI48State = RCC_HSI48_OFF;//RCC_HSI48_ON;
     rcc_osc_init_struct.PLL.PLLState = RCC_PLL_ON;
     rcc_osc_init_struct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-    rcc_osc_init_struct.PLL.PLLN = 192;
-    rcc_osc_init_struct.PLL.PLLM = 5;
+    rcc_osc_init_struct.PLL.PLLN = 120;
+    rcc_osc_init_struct.PLL.PLLM = 1;
     rcc_osc_init_struct.PLL.PLLP = 2;
     rcc_osc_init_struct.PLL.PLLQ = 4;
     rcc_osc_init_struct.PLL.PLLR = 2;

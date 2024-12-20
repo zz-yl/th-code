@@ -19,13 +19,8 @@
 #include "bsp_io.h"
 #include "bsp_timer.h"
 #include "bsp_usart.h"
-#include "bsp_spi.h"
-#include "bsp_qspi.h"
-#include "bsp_ads131m0x.h"
-#include "bsp_ads131m08.h"
-#include "bsp_i2c.h"
-#include "bsp_motor.h"
-#include "bsp_encoder.h"
+#include "bsp_key.h"
+#include "bsp_stflash.h"
 
 /**************************************************************************************************
 *                                      MACROS DEFINE
