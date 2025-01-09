@@ -153,52 +153,52 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sys_timer,0x0A</ItemText>
+          <ItemText>uwTick,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>uwTick,0x0A</ItemText>
+          <ItemText>test_ctrl,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>test_ctrl,0x0A</ItemText>
+          <ItemText>dev_data,0x10</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>dev_data,0x10</ItemText>
+          <ItemText>sfm3300_data</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sfm3300_data</ItemText>
+          <ItemText>motor_data</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>motor_data</ItemText>
+          <ItemText>cal_ctrl,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>cal_ctrl,0x0A</ItemText>
+          <ItemText>uart_dma_buf</ItemText>
         </Ww>
         <Ww>
           <count>7</count>
           <WinNumber>1</WinNumber>
-          <ItemText>uart_dma_buf</ItemText>
+          <ItemText>valve_data</ItemText>
         </Ww>
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>valve_data</ItemText>
+          <ItemText>comm_cmd</ItemText>
         </Ww>
         <Ww>
           <count>9</count>
           <WinNumber>1</WinNumber>
-          <ItemText>comm_cmd</ItemText>
+          <ItemText>sdp_data</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -1097,7 +1097,7 @@
 
   <Group>
     <GroupName>system/freertos_core</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1189,7 +1189,7 @@
 
   <Group>
     <GroupName>system/freertos_port</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

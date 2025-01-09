@@ -61,6 +61,7 @@ void cal_flow(void)
             cal_reset_dev();
             cal_tim_clear();
 
+            cal_ctrl.count = 0;
             cal_ctrl.start = 70;
             cal_ctrl.up = 1;
             cal_ctrl.end = 750;
@@ -104,11 +105,11 @@ void cal_flow(void)
                     cal_ctrl.tim_c = 60000;
                     cal_ctrl.tim_pre = 0.15;
                 }
-                /* 变化测量流量间隔 */
-                if(cal_ctrl.data >= 400)
-                {
-                    cal_ctrl.up = 2;
-                }
+//                /* 变化测量流量间隔 */
+//                if(cal_ctrl.data >= 400)
+//                {
+//                    cal_ctrl.up = 2;
+//                }
                 /* 控制电机 */
                 cal_ctrl.data += cal_ctrl.up;
                 comm_cmd.flow = cal_ctrl.data;
@@ -145,6 +146,7 @@ void cal_flow_b(void)
             cal_reset_dev();
             cal_tim_clear();
 
+            cal_ctrl.count = 0;
             cal_ctrl.start = 0.5;
             cal_ctrl.up = 0.5;
             cal_ctrl.end = 100;
@@ -230,6 +232,7 @@ void cal_flow_c(void)
             cal_reset_dev();
             cal_tim_clear();
 
+            cal_ctrl.count = 0;
             cal_ctrl.start = 30;
             cal_ctrl.up = 1;
             cal_ctrl.end = 250;
@@ -295,6 +298,80 @@ void cal_flow_c(void)
     }
 }
 /**
+* @brief  流量传感器粗校准
+* @attention 
+*/
+void cal_flow_d(void)
+{
+    switch(cal_ctrl.state)
+    {
+        case CAL_STATE_FREE:
+            cal_ctrl.state = CAL_STATE_START;
+            break;
+        case CAL_STATE_START:
+        {
+            cal_reset_dev();
+            cal_tim_clear();
+
+            cal_ctrl.count = 0;
+            cal_ctrl.start = 100;
+            cal_ctrl.up = 50;
+            cal_ctrl.end = 750;
+            cal_ctrl.tim_c = 60000;
+            cal_ctrl.tim_pre = 0.15;
+            
+            cal_ctrl.data = cal_ctrl.start;
+            comm_cmd.type = COMM_FLOW;
+            comm_cmd.flow = cal_ctrl.data;
+            
+            cal_ctrl.state = CAL_STATE_STEP1;
+            break;
+        }
+        case CAL_STATE_STEP1:
+            /* 压差记录值清零 */
+            if(cal_ctrl.cur_tim <= (cal_ctrl.tim_c * cal_ctrl.tim_pre))
+            {
+                dev_data.ff_flag = 1;
+            }
+//            /* 暂停涡轮控制 */
+//            if(cal_ctrl.cur_tim == (cal_ctrl.tim_c * 0.5))
+//            {
+//                comm_cmd.type = COMM_SPEED;
+//            }
+            if(cal_ctrl.cur_tim >= cal_ctrl.tim_c)
+            {
+                cal_tim_clear();
+                /* 记录数据 */
+                cal_ctrl.buf1[cal_ctrl.count] = dev_data.press_lff;
+                cal_ctrl.buf2[cal_ctrl.count] = dev_data.flow_real_lff;
+                cal_ctrl.buf3[cal_ctrl.count] = dev_data.temp_ff;
+                cal_ctrl.count++;
+                if(cal_ctrl.count >= CAL_BUF_MAX)
+                {
+                    cal_ctrl.state = CAL_STATE_RECORD;
+                }
+
+                /* 控制电机 */
+                cal_ctrl.data += cal_ctrl.up;
+                comm_cmd.flow = cal_ctrl.data;
+                comm_cmd.type = COMM_FLOW;
+                /* 结束条件 */
+                if(cal_ctrl.data > cal_ctrl.end)
+                {
+                    cal_ctrl.state = CAL_STATE_RECORD;
+                }
+            }
+            break;
+        case CAL_STATE_RECORD:
+            cal_reset_dev();
+            cal_tim_clear();
+            cal_ctrl.state = CAL_STATE_FREE;
+            cal_ctrl.cmd = CAL_CMD_CANCEL;
+            break;
+        default: break;
+    }
+}
+/**
 * @brief  校准运行
 * @attention 
 */
@@ -305,6 +382,7 @@ void cal_run(void)
         case CAL_CMD_FLOW: cal_flow(); break;
         case CAL_CMD_FLOW_B: cal_flow_b(); break;
         case CAL_CMD_FLOW_C: cal_flow_c(); break;
+        case CAL_CMD_FLOW_D: cal_flow_d(); break;
         default: cal_ctrl.state = CAL_STATE_FREE; break;
     }
     cal_tim_add();

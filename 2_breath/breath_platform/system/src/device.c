@@ -64,8 +64,8 @@ static void dev_pro_data_flow(void)
     
     dev_data.flow_real = dev_data.flow_t1 + dev_data.flow_t2 + dev_data.flow_t3 + dev_data.flow_t4;
     dev_data.flow_real_ff = dev_data.flow_t1_ff + dev_data.flow_t2_ff + dev_data.flow_t3_ff + dev_data.flow_t4_ff;
-//    dev_data.flow_real = dev_data.flow_t4;
-//    dev_data.flow_real_ff = dev_data.flow_t4_ff;
+//    dev_data.flow_real = dev_data.flow_t3;
+//    dev_data.flow_real_ff = dev_data.flow_t3_ff;
 //    dev_data.flow_real = dev_data.flow_t2 + dev_data.flow_t2 + dev_data.flow_t3 + dev_data.flow_t4;
 //    dev_data.flow_real_ff = dev_data.flow_t2_ff + dev_data.flow_t2_ff + dev_data.flow_t3_ff + dev_data.flow_t4_ff;
 }

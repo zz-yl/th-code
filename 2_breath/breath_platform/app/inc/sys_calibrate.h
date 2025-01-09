@@ -33,6 +33,7 @@ typedef enum
     CAL_CMD_FLOW,   //流量传感器校准
     CAL_CMD_FLOW_B,   //流量传感器校准
     CAL_CMD_FLOW_C,
+    CAL_CMD_FLOW_D,
 }calibrate_cmd_t;
 /**
 * @enum  calibrate_state_t

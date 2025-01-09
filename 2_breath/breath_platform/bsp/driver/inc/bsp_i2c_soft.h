@@ -63,10 +63,10 @@ extern i2cs_t i2cs4;
 *                                      FUNCTION PROTOTYPES
 **************************************************************************************************/
 
-void i2c_start(i2cs_t i2c);
-void i2c_stop(i2cs_t i2c);
-uint8_t i2c_write_byte(uint8_t tx_byte, i2cs_t i2c);
-uint8_t i2c_read_byte(uint8_t ack, i2cs_t i2c);
+void i2cs_start(i2cs_t i2c);
+void i2cs_stop(i2cs_t i2c);
+uint8_t i2cs_write_byte(uint8_t tx_byte, i2cs_t i2c);
+uint8_t i2cs_read_byte(uint8_t ack, i2cs_t i2c);
 void i2cs_write(i2cs_t i2c, uint8_t *buf, uint16_t len, uint8_t addr_dev);
 void i2cs_read(i2cs_t i2c, uint8_t *buf, uint16_t len, uint8_t addr_dev);
 
